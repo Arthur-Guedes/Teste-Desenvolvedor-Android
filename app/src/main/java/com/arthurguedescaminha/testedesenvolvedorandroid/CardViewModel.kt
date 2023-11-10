@@ -33,7 +33,6 @@ class CardViewModel : ViewModel() {
 
         ApiService.service.listCards().enqueue(object : Callback<JsonObject> {
             override fun onFailure(call: Call<JsonObject>, t: Throwable) {
-                // TODO t.message
                 cards.postValue(listOf())
             }
 
