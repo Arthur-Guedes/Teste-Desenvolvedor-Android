@@ -19,15 +19,17 @@ class CardViewModel : ViewModel() {
 
     private val orderedCards: MutableLiveData<List<Card>> = MutableLiveData<List<Card>>().apply { value = emptyList() }
 
+    private val keyword: MutableLiveData<String> = MutableLiveData("")
+
     fun getCards(): LiveData<List<Card>> {
         return cards
     }
 
-    fun getCards(keyword: String): LiveData<List<Card>> {
+    fun getOrderedCards(): LiveData<List<Card>> {
         val filteredCards = mutableListOf<Card>()
 
         cards.value!!.forEach { card ->
-            if(card.name.contains(keyword)) {
+            if(card.name.contains(keyword.value!!)) {
                 filteredCards.add(card)
             }
         }
@@ -55,6 +57,10 @@ class CardViewModel : ViewModel() {
                 cards.postValue(tempCards)
             }
         })
+    }
+
+    fun updateKeyword(keyword: String) {
+        this.keyword.postValue(keyword)
     }
 
 }
