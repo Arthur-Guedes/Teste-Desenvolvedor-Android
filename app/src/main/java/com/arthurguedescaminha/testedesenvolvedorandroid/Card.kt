@@ -1,6 +1,6 @@
 package com.arthurguedescaminha.testedesenvolvedorandroid
 
-import com.google.gson.JsonObject
+import com.google.gson.JsonArray
 import com.google.gson.annotations.SerializedName
 
 data class Card(
@@ -19,9 +19,9 @@ data class Card(
     @SerializedName("archetype")
     var archetype : String,
     @SerializedName("card_sets")
-    var cardSets : JsonObject,
+    var cardSets : JsonArray,
     @SerializedName("card_images")
-    var cardImages : JsonObject,
+    var cardImages : JsonArray,
     @SerializedName("card_prices")
-    var cardPrices : JsonObject
+    var cardPrices : JsonArray
 )
