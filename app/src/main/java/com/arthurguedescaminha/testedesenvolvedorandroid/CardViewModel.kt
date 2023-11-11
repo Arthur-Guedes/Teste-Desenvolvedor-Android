@@ -57,7 +57,7 @@ class CardViewModel : ViewModel() {
         val filteredCards = mutableListOf<Card>()
 
         cards.value!!.forEach { card ->
-            if(card.name.contains(keyword)) {
+            if(card.name.lowercase().contains(keyword.lowercase())) {
                 filteredCards.add(card)
             }
         }
