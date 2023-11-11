@@ -8,12 +8,14 @@ import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.RecyclerView
 
 class MainActivity : AppCompatActivity() {
 
     val model: CardViewModel by viewModels()
 
     lateinit var searchView: SearchView
+    lateinit var recyclerView: RecyclerView
     lateinit var textView: TextView
     lateinit var progressBar: ProgressBar
 
@@ -37,8 +39,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun initUi() {
-        model.getCards("teste").observe(this) { cards ->
+        val cardAdapter = CardAdapter()
+        cardAdapter.submitList(model.getCards().value!!)
+
         textView = findViewById(R.id.text_view)
+
+        recyclerView = findViewById(R.id.recycler_view)
+        recyclerView.adapter = cardAdapter
+
         searchView = findViewById(R.id.search_view)
         searchView.isActivated = true
         searchView.queryHint = "Digite aqui o nome do card"
@@ -59,6 +67,20 @@ class MainActivity : AppCompatActivity() {
         })
 
         progressBar = findViewById(R.id.progress_bar)
+
+        model.getOrderedCards().observe(this) { cards ->
+            cardAdapter.submitList(model.getOrderedCards().value!!)
+
+            progressBar.visibility = View.GONE
+            if(cards.isEmpty()) {
+                recyclerView.visibility = View.GONE
+                textView.visibility = View.VISIBLE
+            } else {
+                recyclerView.visibility = View.VISIBLE
+                textView.visibility = View.GONE
+            }
+        }
+
         model.isSorting().observe(this) { isSorting ->
             if(isSorting == true) {
                 recyclerView.visibility = View.GONE
