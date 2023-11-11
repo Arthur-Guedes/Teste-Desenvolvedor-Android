@@ -20,6 +20,9 @@ class MainActivity : AppCompatActivity() {
     lateinit var textView: TextView
     lateinit var progressBar: ProgressBar
 
+    // Indica se usuário já fez alguma filtragem de cards ou não, para, num primeiro momento, mostrar todos os cards de uma vez
+    var firstTimeLoading = true
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -63,6 +66,10 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onQueryTextChange(newText: String): Boolean {
+                if(firstTimeLoading) {
+                    firstTimeLoading = false
+                }
+
                 model.updateCardsList(newText)
 
                 return false
@@ -71,16 +78,22 @@ class MainActivity : AppCompatActivity() {
 
         progressBar = findViewById(R.id.progress_bar)
 
-        model.getOrderedCards().observe(this) { cards ->
-            cardAdapter.submitList(model.getOrderedCards().value!!)
+        // Num carregamento inicial, mostra todos os cards
+        progressBar.visibility = View.GONE
+        recyclerView.visibility = View.VISIBLE
 
-            progressBar.visibility = View.GONE
-            if(cards.isEmpty()) {
-                recyclerView.visibility = View.GONE
-                textView.visibility = View.VISIBLE
-            } else {
-                recyclerView.visibility = View.VISIBLE
-                textView.visibility = View.GONE
+        model.getOrderedCards().observe(this) { cards ->
+            if(!firstTimeLoading) {
+                cardAdapter.submitList(model.getOrderedCards().value!!)
+
+                progressBar.visibility = View.GONE
+                if(cards.isEmpty()) {
+                    recyclerView.visibility = View.GONE
+                    textView.visibility = View.VISIBLE
+                } else {
+                    recyclerView.visibility = View.VISIBLE
+                    textView.visibility = View.GONE
+                }
             }
         }
 
