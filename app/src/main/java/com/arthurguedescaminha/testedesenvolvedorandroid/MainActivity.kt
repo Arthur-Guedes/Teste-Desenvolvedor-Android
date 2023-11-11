@@ -10,6 +10,7 @@ class MainActivity : AppCompatActivity() {
     val model: CardViewModel by viewModels()
 
     lateinit var searchView: SearchView
+    lateinit var progressBar: ProgressBar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,6 +39,7 @@ class MainActivity : AppCompatActivity() {
         searchView.onActionViewExpanded()
         searchView.isIconified = false
         searchView.clearFocus()
+
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
                 return false
@@ -49,6 +51,15 @@ class MainActivity : AppCompatActivity() {
                 return false
             }
         })
+
+        progressBar = findViewById(R.id.progress_bar)
+        model.isSorting().observe(this) { isSorting ->
+            if(isSorting == true) {
+                recyclerView.visibility = View.GONE
+                textView.visibility = View.GONE
+
+                progressBar.visibility = View.VISIBLE
+            }
         }
     }
 
