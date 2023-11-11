@@ -29,7 +29,8 @@ class CardAdapter : ListAdapter<Card, CardAdapter.ViewHolder>(CardsDiff) {
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-        Glide.with(viewHolder.imageView.context).load(getItem(position).cardImages[0].asJsonObject["image_url_cropped"]).into(viewHolder.imageView)
+        Glide.with(viewHolder.imageView.context).load(getItem(position).cardImages[0].asJsonObject["image_url_cropped"].asString).placeholder(
+            com.google.android.material.R.drawable.mtrl_ic_error).into(viewHolder.imageView)
         viewHolder.textView.text = getItem(position).name
     }
 
