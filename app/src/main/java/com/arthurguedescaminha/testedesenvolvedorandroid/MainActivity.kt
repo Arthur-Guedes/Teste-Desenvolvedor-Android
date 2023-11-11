@@ -1,6 +1,10 @@
 package com.arthurguedescaminha.testedesenvolvedorandroid
 
 import android.os.Bundle
+import android.view.View
+import android.widget.ProgressBar
+import android.widget.SearchView
+import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -10,6 +14,7 @@ class MainActivity : AppCompatActivity() {
     val model: CardViewModel by viewModels()
 
     lateinit var searchView: SearchView
+    lateinit var textView: TextView
     lateinit var progressBar: ProgressBar
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,6 +38,7 @@ class MainActivity : AppCompatActivity() {
 
     fun initUi() {
         model.getCards("teste").observe(this) { cards ->
+        textView = findViewById(R.id.text_view)
         searchView = findViewById(R.id.search_view)
         searchView.isActivated = true
         searchView.queryHint = "Digite aqui o nome do card"
