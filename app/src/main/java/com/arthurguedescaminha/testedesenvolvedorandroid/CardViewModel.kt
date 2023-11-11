@@ -19,12 +19,18 @@ class CardViewModel : ViewModel() {
 
     private val orderedCards: MutableLiveData<List<Card>> = MutableLiveData<List<Card>>().apply { value = emptyList() }
 
+    private val sorting: MutableLiveData<Boolean> = MutableLiveData(false)
+
     fun getCards(): LiveData<List<Card>> {
         return cards
     }
 
     fun getOrderedCards(): LiveData<List<Card>> {
         return orderedCards
+    }
+
+    fun isSorting(): LiveData<Boolean> {
+        return sorting
     }
 
     private fun loadCards() {
@@ -47,6 +53,7 @@ class CardViewModel : ViewModel() {
     }
 
     fun updateCardsList(keyword: String) {
+        sorting.postValue(true)
         val filteredCards = mutableListOf<Card>()
 
         cards.value!!.forEach { card ->
@@ -56,6 +63,7 @@ class CardViewModel : ViewModel() {
         }
 
         orderedCards.postValue(filteredCards)
+        sorting.postValue(false)
     }
 
 }
