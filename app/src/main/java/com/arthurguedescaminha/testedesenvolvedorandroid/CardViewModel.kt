@@ -56,13 +56,17 @@ class CardViewModel : ViewModel() {
         sorting.postValue(true)
         val filteredCards = mutableListOf<Card>()
 
-        cards.value!!.forEach { card ->
-            if(card.name.lowercase().contains(keyword.lowercase())) {
-                filteredCards.add(card)
+        if(keyword.isNotEmpty()) {
+            cards.value!!.forEach { card ->
+                if (card.name.lowercase().contains(keyword.lowercase())) {
+                    filteredCards.add(card)
+                }
             }
+            orderedCards.postValue(filteredCards)
+        } else {
+            orderedCards.postValue(cards.value)
         }
 
-        orderedCards.postValue(filteredCards)
         sorting.postValue(false)
     }
 
