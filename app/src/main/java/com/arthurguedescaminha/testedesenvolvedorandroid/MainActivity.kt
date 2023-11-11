@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 class MainActivity : AppCompatActivity() {
@@ -41,10 +42,12 @@ class MainActivity : AppCompatActivity() {
     fun initUi() {
         val cardAdapter = CardAdapter()
         cardAdapter.submitList(model.getCards().value!!)
+        val layoutManager = GridLayoutManager(this, 2)
 
         textView = findViewById(R.id.text_view)
 
         recyclerView = findViewById(R.id.recycler_view)
+        recyclerView.layoutManager = layoutManager
         recyclerView.adapter = cardAdapter
 
         searchView = findViewById(R.id.search_view)
